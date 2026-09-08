@@ -20,7 +20,7 @@ Algorithm Track
 ## AI Novelty & Feasibility Audit
 
 ### Overall Assessment
-The project is feasible and technically meaningful for a class project, but its broad research area has significant “red ocean” risk. Multi-agent pathfinding, A*, prioritized planning, Conflict-Based Search, learned policies, and hybrid classical-learning systems are all well-established research areas. A recent survey reviewed more than 200 classical, learning-based, and hybrid MAPF papers, demonstrating that the general topic is highly active and competitive. Where Paths Collide
+The project is feasible and technically meaningful for a class project, but its broad research area has significant “red ocean” risk. Multi-agent pathfinding, A*, prioritized planning, Conflict-Based Search, learned policies, and hybrid classical-learning systems are all well-established research areas. A recent survey reviewed more than 200 classical, learning-based, and hybrid MAPF papers, demonstrating that the general topic is highly active and competitive.
 
 The project should not claim to introduce a completely new multi-robot path-planning algorithm. Its potential contribution is narrower: using supervised learning to select conflict priorities after independently generated A* paths produce a predicted conflict, while using time-aware A* and deterministic validation to preserve safety.
 
