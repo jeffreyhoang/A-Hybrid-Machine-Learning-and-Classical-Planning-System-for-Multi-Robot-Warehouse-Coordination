@@ -17,46 +17,116 @@ The experiments show that these hybrid methods substantially improve the success
 ### Main Limitation
 The main limitation is that the evaluation focuses on simplified, known 2D grid environments with discrete movements, static obstacles, and predetermined start-goal pairs. These conditions do not represent many challenges of a real robotic system, such as continuous motion, vehicle orientation, acceleration, sensor uncertainty, changing goals, or task arrivals. In addition, the paper finds that when a highly accurate heuristic is available, the classical LaCAM planner outperforms the learned policies. The learned models are more advantageous when the heuristic is imperfect, unavailable, or computationally expensive. 
 
+---
 
 ## Multi-Agent Target Assignment and Path Finding for Intelligent Warehouse
 
 ### Overall Objective
-
+The paper addresses the combined problem of target assignment and path finding (TAPF) in intelligent warehouses. Instead of first assigning tasks to robots and then planning their paths separately, the authors develop a cooperative multi-agent reinforcement learning approach that performs both decisions simultaneously. The goal is to assign tasks efficiently, generate nearly shortest paths, avoid collisions, and reduce computation time. 
 
 ### Key Innovation
+The paper’s main innovations are modeling warehouse TAPF as a cooperative multi-agent deep reinforcement learning problem and solving it using multi-agent deep deterministic policy gradient (MADDPG). The approach includes:
+- Simultaneous task assignment and path planning
+- A shared policy for homogeneous robots
+- A centralized critic during training and decentralized policies during execution
+- Continuous actions rather than only discrete grid movements
+- Agent velocity and acceleration when generating movement
+- A shared reward function that encourages task completion, short travel distances, and collision avoidance
 
+The authors report that the method assigns tasks to nearby robots, produces nearly shortest paths, demonstrates cooperative behavior during conflicts, and requires less decision time than the traditional methods tested.
 
 ### Main Limitation
+The main limitation is the lack of validation in realistic or physical warehouse environments. Although the paper includes velocity, acceleration, and continuous actions, the experiments are still conducted in relatively small simulated scenarios involving at most five agents and twenty tasks. The agents and tasks are also assumed to be homogeneous, and task locations are generated randomly. 
 
+The evaluation primarily measures simulated path quality, cooperation, and per-step decision time. It does not establish how well the method handles larger warehouses, changing task arrivals, imperfect observations, communication delays, hardware constraints, or real robot execution. The authors identify applying the method to real-world TAPF problems as future works. 
+
+---
 
 ## Multi-Agent Path Finding with Real Robot Dynamics and Interdependent Tasks for Automated Warehouses
 
 ### Overall Objective
+The paper aims to solve a more realistic version of multi-agent path finding for automated warehouses. Unlike simplified MAPF problems that use grid-based environments and assume robots can instantly stop or change direction, this paper considers:
+- Online orders arriving throughout the day
+- Multiple pickup and delivery tasks within each order
+- Dependencies between tasks
+- Robots with acceleration, deceleration, orientation, and speed constraints
+- Large robots moving through narrow warehouse aisles
+- Collision avoidance with moving robots and obstacles
 
+The goal is to generate collision-free trajectories while maximizing warehouse throughput.
 
 ### Key Innovation
+The paper introduces two main algorithmic contributions:
+- Interleaved Prioritized Planning (IPP): An extension of prioritized planning that dynamically changes robot priorities while planning interdependent pickup and delivery tasks. This prevents tasks belonging to the same order form being improperly mixed and accounts for workstation availability.
+- Via-Point Start (VP*): A shortest-path algorithm that generates robot trajectories through multiple required locations while considering realistic motion constraints, moving obstacles, robot orientation, velocity, acceleration, and load-dependent movement.
 
+The paper also proves that the combined approach is complete under certain assumptions. Its performance is evaluated through simulations and preliminary experiments with physical warehouse robots.
 
 ### Main Limitation
+The main limitation is that the system does not yet adapt quickly enough to unexpected changes during execution. Real warehouse experiments showed noticeable differences between planned and actual robot trajectories, especially because pickup and drop-off times were unpredictable. The time margins introduced by the authors improved robustness but were not always sufficient to handle unexpected delays.
 
+The paper also separates task assignment from trajectory planning instead of jointly optimizing both decisions. As the number of robots and tasks increases, planning time can become substantial, making frequent replanning difficult. The authors identify faster continual replanning and joint optimization of task assignment and trajectory planning as important areas for future works. 
+
+---
 
 ## POGEMA: A Benchmark Platform for Cooperative Multi-Agent Pathfinding
 
 ### Overall Objective
+The paper introduces POGEMA, a standardized platform for developing and evaluating cooperative multi-agent pathfinding methods. 
 
+Before POGEMA, classical planners, reinforcement-learning methods, and hybrid approaches were often tested using different environments, datasets, metrics, and evaluation procedures. This made it difficult to determine which method actually performed better.
+
+POGEMA provides:
+- A fast multi-agent grid environment
+- Procedural map and scenario generation
+- Support for standard and lifelong MAPF
+- Visualization tools
+- Automated benchmarking
+- Standardized metrics such as success rate, path length, cooperation, congestion, scalability, and generalization
+
+The overall goal is to make comparisons between classical, machine learning, and hybrid pathfinding methods more consistent and reproducible.
 
 ### Key Innovation
+The key innovation is not a new path-planning algorithm. Rather, it is the creation of a unified benchmark and evaluation framework for multi-agent pathfinding.
 
+POGEMA is designed to support different types of solvers within the same environment, including:
+- Classical search-based planners
+- Multi-agent reinforcement-learning methods
+- Hybrid planning-and-learning systems
+
+It also emphasizes procedural generation and out-of-distribution testing, allowing researchers to measure whether a method can generalize to new maps, agent populations, and congestion levels rather than only memorizing training scenarios.
+
+The platform is hardware-agnostic, Python-based, open source, and designed for high simulation speed, making it practical for large-scale training and evaluation. 
 
 ### Main Limitation
+The main limitation is that POGEMA remains an abstract, grid-based benchmark. Agents move through discrete cells using discrete actions, and the environment does not fully represent real robot dynamics such as acceleration, turning radius, vehicle size, continuous motion, sensor noise, or physical execution errors. This means that strong performance in POGEMA does not automatically demonstrate that a method will work reliably on physical warehouse robots.
 
+---
 
 ## Where Paths Collide: A Comprehensive Survey of Classic and Learning-Based Multi-Agent Pathfinding
 
 ### Overall Objective
+The paper provides a comprehensive survey of multi-agent pathfinding (MAPF) research across both classical and machine learning approaches. It reviews:
+- Search-based methods such as CBS, PBS, and LNS
+- SAT, SMT, CSP, ASP, and MIP formulations
+- Reinforcement learning and supervised learning methods
+- Hybrid systems that combine learning with classical planning
+- Evaluation metrics, environments, datasets, and baseline-selection practices
 
+The authors analyze more than 200 papers to identify how MAPF methods are designed, evaluated, and compared across different research areas.
 
 ### Key Innovation
-
+The key innovation is the paper’s unified analysis of classical, machine learning, and hybrid MAPF methods. Rather than introducing a new algorithm, the survey creates a common structure for comparing the various approaches. It organizes methods according to their planning mechanisms, learning strategies, control structures, environments, metrics, and scalability.
 
 ### Main Limitation
+The main limitation identified by the paper is the lack of fair, standardized comparison between classical and machine learning MAPF methods. 
+
+Different studies often use different:
+- Map sizes and layouts
+- Numbers of agents
+- Definitions of success
+- Performance metrics
+- Baseline algorithms
+- Assumptions about observability and communication
+
+The survey notes that machine learning approaches are often evaluated with approximately 10 to 100 agents, while classical methods may be tested with 1000 or more agents. Additionally, many learning-based methods lack formal guarantees for collision avoidance, completeness, optimality, or generalization to unseen environments. The paper identifies hybrid approaches and standardized evaluation protocols as important ways to address this gap.
