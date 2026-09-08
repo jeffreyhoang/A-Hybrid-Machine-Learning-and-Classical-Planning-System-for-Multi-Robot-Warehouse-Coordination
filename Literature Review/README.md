@@ -1,8 +1,5 @@
 # Literature Review
-
-> This literature review summarizes 5 recent papers published within the last 1–3 years, specifying the overall objective, key innovation, and main limitation.
-
----
+> This literature review summarizes 5 recent papers published within the last 1–3 years, each specifying its overall objective, key innovation, and main limitation.
 
 ## Improving Learnt Local MAPF Policies with Heuristic Search
 
